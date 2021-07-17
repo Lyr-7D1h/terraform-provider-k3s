@@ -19,7 +19,12 @@ Supported devices:
 - Odroid MC1
 - Raspberry Pi B+
 
-## Introduction
+## Requirements
+
+- [Terraform](https://www.terraform.io/downloads.html) >= 0.13.x
+- [Go](https://golang.org/doc/install) >= 1.15
+
+## Using the provider
 
 Example:
 
