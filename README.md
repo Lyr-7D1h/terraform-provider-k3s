@@ -31,7 +31,7 @@ Example:
 ```tf
 provider "k3s" {
   # Used for setting up ssh connections to servers
-  pub_ssh_key = "~/.ssh/id_rsa.pub"
+  public_ssh_key = "~/.ssh/id_rsa.pub"
 
   # Server not yet using ssh key defined try connecting using default username and passwords
   extra_default_ssh_credentials = {

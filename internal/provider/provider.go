@@ -3,38 +3,32 @@ package provider
 import (
 	"context"
 
+	"../k3s"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func init() {
-	// Set descriptions to support markdown syntax, this will be used in document generation
-	// and the language server.
 	schema.DescriptionKind = schema.StringMarkdown
-
-	// Customize the content of descriptions when output. For example you can add defaults on
-	// to the exported descriptions if present.
-	// schema.SchemaDescriptionBuilder = func(s *schema.Schema) string {
-	// 	desc := s.Description
-	// 	if s.Default != nil {
-	// 		desc += fmt.Sprintf(" Defaults to `%v`.", s.Default)
-	// 	}
-	// 	return strings.TrimSpace(desc)
-	// }
 }
 
 func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
+			Schema: map[string]*schema.Schema{
+				"public_ssh_key": {
+					Type: schema.TypeString,
+				},
+			},
 			DataSourcesMap: map[string]*schema.Resource{
-				"scaffolding_data_source": dataSourceScaffolding(),
+				// "scaffolding_data_source": dataSourceScaffolding(),
 			},
 			ResourcesMap: map[string]*schema.Resource{
-				"scaffolding_resource": resourceScaffolding(),
+				// "scaffolding_resource": resourceScaffolding(),
 			},
+			ConfigureContextFunc: configure,
 		}
-
-		p.ConfigureContextFunc = configure(version, p)
 
 		return p
 	}
@@ -46,12 +40,20 @@ type apiClient struct {
 	// API.
 }
 
-func configure(version string, p *schema.Provider) func(context.Context, *schema.ResourceData) (interface{}, diag.Diagnostics) {
-	return func(context.Context, *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		// Setup a User-Agent for your API client (replace the provider name for yours):
-		// userAgent := p.UserAgent("terraform-provider-scaffolding", version)
-		// TODO: myClient.UserAgent = userAgent
+func configure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
+	public_ssh_key_path := d.Get("public_ssh_key").(string)
 
-		return &apiClient{}, nil
+
+	// Warning or errors can be collected in a slice type
+	var diags diag.Diagnostics
+
+	k, err := k3s.New(public_ssh_key_path)
+
+	if err != nil {
+		diags = append(diags, diag.Diagnostic{  Severity: diag.Error,  Summary:  "Unable to create k3s client",  Detail:   err.Error(),})
+		return nil, diags 
 	}
+
+
+	return k, diags
 }

@@ -1,9 +1,9 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
 HOSTNAME=hashicorp.com
-NAMESPACE=edu
-NAME=hashicups
+NAMESPACE=lyr-7d1h
+NAME=k3s
 BINARY=terraform-provider-${NAME}
-VERSION=0.2
+VERSION=0.1
 OS_ARCH=linux_amd64
 
 default: install
