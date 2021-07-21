@@ -5,7 +5,9 @@ NAME=k3s
 BINARY=terraform-provider-${NAME}
 VERSION=0.1
 OS_ARCH=linux_amd64
+GOPATH=.
 
+.PHONY: test testacc build install release docs
 default: install
 
 test: 
@@ -21,6 +23,10 @@ build:
 install: build
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+	
+docs:
+	terraform fmt -recursive ./examples
+	go generate
 
 release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64

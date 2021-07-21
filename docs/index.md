@@ -1,13 +1,10 @@
 ---
-page_title: "scaffolding Provider"
-subcategory: ""
-description: |-
-  
+page_title: "K3S Provider"
+subcategory: "infrastructure"
+description: "Terraform provider for setting up a k3s cluster on bare metal machines."
 ---
 
-# scaffolding Provider
-
-
+# K3S Provider
 
 ## Example Usage
 

@@ -3,17 +3,17 @@ package provider
 import (
 	"context"
 
-	"../k3s"
-
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/lyr-7d1h/terraform-provider-k3s/internal/k3s"
 )
 
 func init() {
 	schema.DescriptionKind = schema.StringMarkdown
 }
 
-func New(version string) func() *schema.Provider {
+func Provider(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
 			Schema: map[string]*schema.Schema{
