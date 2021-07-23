@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/lyr-7d1h/terraform-provider-k3s/internal/k3s"
+	"github.com/lyr-7d1h/terraform-provider-k3s/internal/clusterit"
 )
 
 func init() {
@@ -34,12 +34,6 @@ func Provider(version string) func() *schema.Provider {
 	}
 }
 
-type apiClient struct {
-	// Add whatever fields, client or connection info, etc. here
-	// you would need to setup to communicate with the upstream
-	// API.
-}
-
 func configure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	public_ssh_key_path := d.Get("public_ssh_key").(string)
 
@@ -47,7 +41,7 @@ func configure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.D
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	k, err := k3s.New(public_ssh_key_path)
+	k, err := clusterit.New(public_ssh_key_path)
 
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{  Severity: diag.Error,  Summary:  "Unable to create k3s client",  Detail:   err.Error(),})
