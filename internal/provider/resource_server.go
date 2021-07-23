@@ -54,7 +54,7 @@ func resourceServerUpdate(ctx context.Context, d *schema.ResourceData, meta inte
 
 func resourceServerDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	// use the meta value to retrieve your client from the provider configure method
-	client := meta.(*k3s)
+	client := meta.(*clusterit)
 
 	return diag.Errorf("not implemented")
 }

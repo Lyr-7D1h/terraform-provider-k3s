@@ -1,4 +1,4 @@
-package k3s
+package clusterit
 
 import "io/ioutil"
 
